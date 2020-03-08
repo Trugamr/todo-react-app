@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.scss'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from './components/header/header.component'
+
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'
+
+class App extends React.Component {
+  unsubscribeFromAuth = null
+
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth)
+
+        userRef.onSnapshot(snapShot => {
+          console.log(snapShot.id, snapShot.data())
+        })
+      } else {
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth()
+  }
+
+  render() {
+    return (
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/"></Route>
+        </Switch>
+      </Router>
+    )
+  }
 }
 
-export default App;
+export default App
