@@ -12,13 +12,13 @@ import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 const Header = ({ currentUser }) => {
   return (
-    <div className="header">
+    <div className="header-container">
       <Pane
+        className="header"
         display="flex"
         padding={16}
         borderRadius={3}
         background="tint2"
-        margin={20}
       >
         <Pane flex={1} display="flex" alignItems="center">
           <Heading size={600}>✏ Todo</Heading>

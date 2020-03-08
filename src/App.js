@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Header from './components/header/header.component'
 import TodoPage from './pages/todo-page/todo-page.component'
+import Footer from './components/footer/footer.component'
 
 import {
   auth,
@@ -51,12 +52,17 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Header />
-        <Switch>
-          <Route path="/">
-            <TodoPage />
-          </Route>
-        </Switch>
+        <div className="app">
+          <Header className="header" />
+          <div className="content">
+            <Switch>
+              <Route path="/">
+                <TodoPage />
+              </Route>
+            </Switch>
+          </div>
+          <Footer className="footer" />
+        </div>
       </Router>
     )
   }

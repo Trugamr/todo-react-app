@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './todos-container.styles.scss'
 
-import { Pane } from 'evergreen-ui'
+import { Pane, Heading } from 'evergreen-ui'
 
 import TodoItem from '../todo-item/todo-item.component'
 
@@ -17,17 +17,29 @@ const TodosContainer = ({ todos }) => (
     margin={20}
     className="todo-container"
   >
-    {todos.map(({ id, text, starred, completed, ...otherProps }, index) => (
-      <TodoItem
-        key={id}
-        todoId={id}
-        text={text}
-        index={index + 1}
-        starred={starred}
-        completed={completed}
-        {...otherProps}
-      />
-    ))}
+    {todos.length ? (
+      todos.map(({ id, text, starred, completed, ...otherProps }, index) => (
+        <TodoItem
+          key={id}
+          todoId={id}
+          text={text}
+          index={index + 1}
+          starred={starred}
+          completed={completed}
+          {...otherProps}
+        />
+      ))
+    ) : (
+      <Pane
+        display="flex"
+        padding={16}
+        borderRadius={3}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Heading color="#7B8B9A">Empty :(</Heading>
+      </Pane>
+    )}
   </Pane>
 )
 
