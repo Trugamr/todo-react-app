@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import './header.styles.scss'
 
 import { Pane, Button, Heading } from 'evergreen-ui'
@@ -24,4 +25,4 @@ const Header = () => (
   </Pane>
 )
 
-export default Header
+export default connect(null, null)(Header)
