@@ -2,27 +2,54 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './header.styles.scss'
 
-import { Pane, Button, Heading } from 'evergreen-ui'
+import { Pane, Button, Heading, Icon } from 'evergreen-ui'
 
-import { signInWithGoogle } from '../../firebase/firebase.utils'
+import UserCard from '../user-card/user-card.component'
 
-const Header = () => (
-  <Pane
-    display="flex"
-    padding={16}
-    borderRadius={3}
-    background="tint2"
-    margin={20}
-  >
-    <Pane flex={1} display="flex" alignItems="center">
-      <Heading size={600}>✏ Todo</Heading>
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils'
+
+import { selectCurrentUser } from '../../redux/user/user.selectors'
+
+const Header = ({ currentUser }) => {
+  return (
+    <Pane
+      display="flex"
+      padding={16}
+      borderRadius={3}
+      background="tint2"
+      margin={20}
+    >
+      <Pane flex={1} display="flex" alignItems="center">
+        <Heading size={600}>✏ Todo</Heading>
+      </Pane>
+      <Pane display="flex">
+        {currentUser ? (
+          <Pane display="flex">
+            <UserCard
+              name={currentUser.displayName}
+              imageURL={currentUser.photoURL}
+            />
+            <Button
+              onClick={() => auth.signOut()}
+              appearance="minimal"
+              paddingX={8}
+            >
+              <Icon icon="log-out" />
+            </Button>
+          </Pane>
+        ) : (
+          <Button onClick={signInWithGoogle} appearance="primary">
+            <span>Sign In</span>
+            <Icon icon="log-in" marginLeft={10} />
+          </Button>
+        )}
+      </Pane>
     </Pane>
-    <Pane>
-      <Button onClick={signInWithGoogle} appearance="primary">
-        Sign In
-      </Button>
-    </Pane>
-  </Pane>
-)
+  )
+}
 
-export default connect(null, null)(Header)
+const mapStateToProps = state => ({
+  currentUser: selectCurrentUser(state)
+})
+
+export default connect(mapStateToProps)(Header)
