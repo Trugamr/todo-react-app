@@ -1,0 +1,15 @@
+.todo-form {
+  .text-input {
+    box-shadow: none;
+    border: 2px solid #f5f6f7;
+    border-right-style: hidden;
+    border-radius: 3px 0px 0px 3px;
+  }
+
+  .add-button {
+    box-shadow: none;
+    border: 2px solid #f5f6f7;
+    border-radius: 0px 3px 3px 0px;
+    border-left-style: hidden;
+  }
+}

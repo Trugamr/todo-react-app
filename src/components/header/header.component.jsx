@@ -12,39 +12,41 @@ import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 const Header = ({ currentUser }) => {
   return (
-    <Pane
-      display="flex"
-      padding={16}
-      borderRadius={3}
-      background="tint2"
-      margin={20}
-    >
-      <Pane flex={1} display="flex" alignItems="center">
-        <Heading size={600}>✏ Todo</Heading>
-      </Pane>
-      <Pane display="flex">
-        {currentUser ? (
-          <Pane display="flex">
-            <UserCard
-              name={currentUser.displayName}
-              imageURL={currentUser.photoURL}
-            />
-            <Button
-              onClick={() => auth.signOut()}
-              appearance="minimal"
-              paddingX={8}
-            >
-              <Icon icon="log-out" color="muted" />
+    <div className="header">
+      <Pane
+        display="flex"
+        padding={16}
+        borderRadius={3}
+        background="tint2"
+        margin={20}
+      >
+        <Pane flex={1} display="flex" alignItems="center">
+          <Heading size={600}>✏ Todo</Heading>
+        </Pane>
+        <Pane display="flex">
+          {currentUser ? (
+            <Pane display="flex">
+              <UserCard
+                name={currentUser.displayName}
+                imageURL={currentUser.photoURL}
+              />
+              <Button
+                onClick={() => auth.signOut()}
+                appearance="minimal"
+                paddingX={8}
+              >
+                <Icon icon="log-out" color="muted" />
+              </Button>
+            </Pane>
+          ) : (
+            <Button onClick={signInWithGoogle} appearance="primary">
+              <span>Sign In</span>
+              <Icon icon="log-in" marginLeft={10} />
             </Button>
-          </Pane>
-        ) : (
-          <Button onClick={signInWithGoogle} appearance="primary">
-            <span>Sign In</span>
-            <Icon icon="log-in" marginLeft={10} />
-          </Button>
-        )}
+          )}
+        </Pane>
       </Pane>
-    </Pane>
+    </div>
   )
 }
 

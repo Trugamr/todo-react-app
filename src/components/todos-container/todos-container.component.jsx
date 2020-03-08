@@ -20,6 +20,7 @@ const TodosContainer = ({ todos }) => (
     {todos.map(({ id, text, starred, completed, ...otherProps }, index) => (
       <TodoItem
         key={id}
+        todoId={id}
         text={text}
         index={index + 1}
         starred={starred}
