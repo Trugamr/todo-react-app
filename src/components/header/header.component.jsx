@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './header.styles.scss'
+import { ReactComponent as Logo } from '../../assets/pencil.svg'
 
 import { Pane, Button, Heading, Icon } from 'evergreen-ui'
 
@@ -21,7 +22,8 @@ const Header = ({ currentUser }) => {
         background="tint2"
       >
         <Pane flex={1} display="flex" alignItems="center">
-          <Heading size={600}>✏ Todo</Heading>
+          <Logo className="logo" />
+          <Heading size={600}> Todo</Heading>
         </Pane>
         <Pane display="flex">
           {currentUser ? (

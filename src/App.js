@@ -51,7 +51,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router basename="/todo-react-app">
         <div className="app">
           <Header className="header" />
           <div className="content">
