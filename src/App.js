@@ -4,6 +4,7 @@ import './App.scss'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Header from './components/header/header.component'
+import TodoPage from './pages/todo-page/todo-page.component'
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
@@ -40,7 +41,9 @@ class App extends React.Component {
       <Router>
         <Header />
         <Switch>
-          <Route path="/"></Route>
+          <Route path="/">
+            <TodoPage />
+          </Route>
         </Switch>
       </Router>
     )

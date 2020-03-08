@@ -1,0 +1,9 @@
+.todo-container {
+  > :nth-child(odd) {
+    background-color: darken($color: #f5f6f7, $amount: 6);
+  }
+
+  > :nth-child(even) {
+    background-color: darken($color: #f5f6f7, $amount: 0);
+  }
+}

@@ -34,7 +34,7 @@ const Header = ({ currentUser }) => {
               appearance="minimal"
               paddingX={8}
             >
-              <Icon icon="log-out" />
+              <Icon icon="log-out" color="muted" />
             </Button>
           </Pane>
         ) : (

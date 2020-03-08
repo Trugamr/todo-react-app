@@ -1,0 +1,13 @@
+.todo-item {
+  .todo-text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &.strike-text {
+      text-decoration: line-through;
+    }
+  }
+}
