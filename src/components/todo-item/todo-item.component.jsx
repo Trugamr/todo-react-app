@@ -14,7 +14,8 @@ class TodoItem extends React.Component {
     starred: false,
     completed: false,
     isShown: false,
-    isLoading: false
+    isLoading: false,
+    isShownDel: false
   }
 
   handleCompleted = async todoId => {
@@ -51,8 +52,10 @@ class TodoItem extends React.Component {
     }
   }
 
-  handleDelete = async todoId => {
+  handleDelete = async (todoId, closeDialog) => {
     const { currentUser } = this.props
+
+    if (closeDialog) closeDialog()
 
     try {
       await firestore.doc(`/users/${currentUser.id}/todos/${todoId}`).delete()
@@ -69,11 +72,11 @@ class TodoItem extends React.Component {
 
   handleDialogConfirm = async (todoId, closeDialog) => {
     this.setState({
-      isLoading: true 
+      isLoading: true
     })
 
     const { currentUser } = this.props
- 
+
     try {
       await firestore.doc(`/users/${currentUser.id}/todos/${todoId}`).update({
         text: this.state.text
@@ -81,7 +84,7 @@ class TodoItem extends React.Component {
     } catch (error) {
       console.error(`failed to edit todo : ${error.message}`)
     }
-    closeDialog();
+    closeDialog()
   }
 
   componentDidMount() {
@@ -127,7 +130,7 @@ class TodoItem extends React.Component {
           </Text>
         </Pane>
         <Pane>
-        <Button
+          <Button
             appearance="minimal"
             marginRight={4}
             onClick={() => this.setState({ isShown: true })}
@@ -135,7 +138,7 @@ class TodoItem extends React.Component {
           >
             <Icon icon="edit" color="selected" />
           </Button>
-          
+
           <Button
             appearance="minimal"
             marginRight={4}
@@ -147,21 +150,24 @@ class TodoItem extends React.Component {
           <Button
             appearance="minimal"
             padding={8}
-            onClick={() => this.handleDelete(todoId)}
+            onClick={() => this.setState({ isShownDel: true })}
           >
             <Icon icon="cross" color="danger" />
           </Button>
         </Pane>
 
-
-        {/* Dialog  */}
+        {/* Edit Dialog  */}
         <Dialog
           isShown={this.state.isShown}
           title="Edit todo"
-          onCloseComplete={() => this.setState({ isShown: false, isLoading: false })}
+          onCloseComplete={() =>
+            this.setState({ isShown: false, isLoading: false })
+          }
           confirmLabel={this.state.isLoading ? 'Saving...' : 'Save'}
           isConfirmLoading={this.state.isLoading}
-          onConfirm={(closeDialog) => this.handleDialogConfirm(todoId, closeDialog)}
+          onConfirm={closeDialog =>
+            this.handleDialogConfirm(todoId, closeDialog)
+          }
           onCancel={() => this.setState({ isShown: false })}
         >
           <Textarea
@@ -171,6 +177,21 @@ class TodoItem extends React.Component {
             onChange={this.handleChange}
             required
           />
+        </Dialog>
+
+        {/* Delete Dialog  */}
+        <Dialog
+          isShown={this.state.isShownDel}
+          title="Delete todo"
+          intent="danger"
+          onCloseComplete={() =>
+            this.setState({ isShownDel: false, isLoadingDel: false })
+          }
+          confirmLabel="Delete"
+          onConfirm={closeDialog => this.handleDelete(todoId, closeDialog)}
+          onCancel={() => this.setState({ isShownDel: false })}
+        >
+          <Text>{this.state.text}</Text>
         </Dialog>
       </Pane>
     )
