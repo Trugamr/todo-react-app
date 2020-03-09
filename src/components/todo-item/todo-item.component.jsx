@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './todo-item.styles.scss'
 
-import { Pane, Button, Text, Icon } from 'evergreen-ui'
+import { Pane, Button, Text, Icon, Dialog, Textarea } from 'evergreen-ui'
 
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 
@@ -10,8 +10,11 @@ import { firestore } from '../../firebase/firebase.utils'
 
 class TodoItem extends React.Component {
   state = {
+    text: '',
     starred: false,
-    completed: false
+    completed: false,
+    isShown: false,
+    isLoading: false
   }
 
   handleCompleted = async todoId => {
@@ -58,12 +61,36 @@ class TodoItem extends React.Component {
     }
   }
 
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  handleDialogConfirm = async (todoId, closeDialog) => {
+    this.setState({
+      isLoading: true 
+    })
+
+    const { currentUser } = this.props
+ 
+    try {
+      await firestore.doc(`/users/${currentUser.id}/todos/${todoId}`).update({
+        text: this.state.text
+      })
+    } catch (error) {
+      console.error(`failed to edit todo : ${error.message}`)
+    }
+    closeDialog();
+  }
+
   componentDidMount() {
-    const { completed, starred } = this.props
+    const { text, starred, completed } = this.props
 
     this.setState({
-      completed,
-      starred
+      text,
+      starred,
+      completed
     })
   }
 
@@ -100,20 +127,51 @@ class TodoItem extends React.Component {
           </Text>
         </Pane>
         <Pane>
+        <Button
+            appearance="minimal"
+            marginRight={4}
+            onClick={() => this.setState({ isShown: true })}
+            padding={8}
+          >
+            <Icon icon="edit" color="selected" />
+          </Button>
+          
           <Button
             appearance="minimal"
             marginRight={4}
+            padding={8}
             onClick={() => this.handleStarred(todoId)}
           >
             <Icon icon="star" color={`${starred ? '#F7D154' : 'muted'}`} />
           </Button>
           <Button
             appearance="minimal"
+            padding={8}
             onClick={() => this.handleDelete(todoId)}
           >
             <Icon icon="cross" color="danger" />
           </Button>
         </Pane>
+
+
+        {/* Dialog  */}
+        <Dialog
+          isShown={this.state.isShown}
+          title="Edit todo"
+          onCloseComplete={() => this.setState({ isShown: false, isLoading: false })}
+          confirmLabel={this.state.isLoading ? 'Saving...' : 'Save'}
+          isConfirmLoading={this.state.isLoading}
+          onConfirm={(closeDialog) => this.handleDialogConfirm(todoId, closeDialog)}
+          onCancel={() => this.setState({ isShown: false })}
+        >
+          <Textarea
+            name="text"
+            placeholder="Your todo..."
+            value={this.state.text}
+            onChange={this.handleChange}
+            required
+          />
+        </Dialog>
       </Pane>
     )
   }
