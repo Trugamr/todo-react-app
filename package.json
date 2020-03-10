@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "evergreen-ui": "^4.23.0",
     "firebase": "^7.10.0",
+    "framer-motion": "^1.9.1",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
