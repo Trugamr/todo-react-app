@@ -42,7 +42,7 @@ const Footer = () => {
       <motion.div
         initial="hidden"
         animate="show"
-        transition={spring}
+        transition={{ ...spring, delay: 0.6 }}
         variants={footerVariants}
       >
         <Pane
