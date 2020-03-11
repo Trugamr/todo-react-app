@@ -57,8 +57,7 @@ const TodosContainer = ({ todos }) => {
             ({ id, text, starred, completed, ...otherProps }, index) => (
               <motion.div
                 key={id}
-                // index + 20 for artificial delay until I learn to use hooks and wait for form animation to complete
-                custom={stagger ? index + 20 : 1}
+                custom={stagger ? index + 1 : 1}
                 initial="hidden"
                 animate="show"
                 transition={spring}

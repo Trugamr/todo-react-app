@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import './todo-page.styles.scss'
 
@@ -11,6 +11,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 const TodoPage = ({ currentUser }) => {
+  const [todoFormAnimEnd, setTodoFormAnimEnd] = useState(false)
+
+  // set form anim end status back to false after component mount
+  // so animation would wait even if user signs out and back in
+  useEffect(() => {
+    if (!currentUser) setTodoFormAnimEnd(false)
+  })
+
   const variants = {
     hidden: {
       opacity: 0,
@@ -24,7 +32,7 @@ const TodoPage = ({ currentUser }) => {
 
   const spring = {
     type: 'spring',
-    damping: 30,
+    damping: 50,
     stiffness: 200
   }
 
@@ -59,15 +67,16 @@ const TodoPage = ({ currentUser }) => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            transition={spring}
+            transition={{ ...spring, delay: 0.4 }}
             variants={variants}
             key="forAnimation2"
+            onAnimationComplete={() => setTodoFormAnimEnd(true)}
           >
             <TodoForm />
           </motion.div>
         ) : null}
       </AnimatePresence>
-      {currentUser ? <TodosContainer /> : null}
+      {currentUser && todoFormAnimEnd ? <TodosContainer /> : null}
     </div>
   )
 }

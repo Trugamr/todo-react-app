@@ -60,6 +60,7 @@ const Footer = () => {
               animate={isAnimated ? 'animate' : 'stop'}
               onHoverStart={() => setAnimate(true)}
               onHoverEnd={() => setAnimate(false)}
+              style={{ display: 'flex' }}
             >
               <Icon marginX={4} size={14} icon="heart" color="#EC4C47" />
             </motion.span>
