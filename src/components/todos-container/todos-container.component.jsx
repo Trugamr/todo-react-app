@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import './todos-container.styles.scss'
 
 import { Pane, Heading } from 'evergreen-ui'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import TodoItem from '../todo-item/todo-item.component'
 
@@ -22,7 +22,15 @@ const itemVariants = {
     transition: {
       delay: custom * 0.08
     }
-  })
+  }),
+  exit: {
+    y: -20,
+    opacity: 0,
+    scale: 0,
+    transition: {
+      duration: 0.2
+    }
+  }
 }
 
 const spring = {
@@ -40,33 +48,38 @@ const TodosContainer = ({ todos }) => {
       display="flex"
       flexDirection="column"
       borderRadius={3}
-      background="tint2"
       margin={20}
       className="todo-container"
     >
       {todosLength ? (
-        todos.map(({ id, text, starred, completed, ...otherProps }, index) => (
-          <motion.div
-            key={id}
-            custom={stagger ? index : 1}
-            initial="hidden"
-            animate="show"
-            transition={spring}
-            variants={itemVariants}
-            onAnimationComplete={() => {
-              if (index === todosLength - 1) setStagger(false)
-            }}
-          >
-            <TodoItem
-              todoId={id}
-              text={text}
-              index={index + 1}
-              starred={starred}
-              completed={completed}
-              {...otherProps}
-            />
-          </motion.div>
-        ))
+        <AnimatePresence>
+          {todos.map(
+            ({ id, text, starred, completed, ...otherProps }, index) => (
+              <motion.div
+                key={id}
+                custom={stagger ? index : 1}
+                initial="hidden"
+                animate="show"
+                transition={spring}
+                variants={itemVariants}
+                positionTransition
+                exit="exit"
+                onAnimationComplete={() => {
+                  if (index === todosLength - 1) setStagger(false)
+                }}
+              >
+                <TodoItem
+                  todoId={id}
+                  text={text}
+                  index={index + 1}
+                  starred={starred}
+                  completed={completed}
+                  {...otherProps}
+                />
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
       ) : (
         <Pane
           display="flex"
