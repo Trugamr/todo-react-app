@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import './todo-item.styles.scss'
 
 import { Pane, Button, Text, Icon, Dialog, Textarea } from 'evergreen-ui'
+import { motion } from 'framer-motion'
 
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 
@@ -130,30 +131,37 @@ class TodoItem extends React.Component {
           </Text>
         </Pane>
         <Pane>
-          <Button
-            appearance="minimal"
-            marginRight={4}
-            onClick={() => this.setState({ isShown: true })}
-            padding={8}
-          >
-            <Icon icon="edit" color="selected" />
-          </Button>
+          <motion.div className="motion-button" whileTap={{ scale: 0.9 }}>
+            <Button
+              appearance="minimal"
+              marginRight={4}
+              onClick={() => this.setState({ isShown: true })}
+              padding={8}
+            >
+              <Icon icon="edit" color="selected" />
+            </Button>
+          </motion.div>
 
-          <Button
-            appearance="minimal"
-            marginRight={4}
-            padding={8}
-            onClick={() => this.handleStarred(todoId)}
-          >
-            <Icon icon="star" color={`${starred ? '#F7D154' : 'muted'}`} />
-          </Button>
-          <Button
-            appearance="minimal"
-            padding={8}
-            onClick={() => this.setState({ isShownDel: true })}
-          >
-            <Icon icon="cross" color="danger" />
-          </Button>
+          <motion.div className="motion-button" whileTap={{ scale: 0.9 }}>
+            <Button
+              appearance="minimal"
+              marginRight={4}
+              padding={8}
+              onClick={() => this.handleStarred(todoId)}
+            >
+              <Icon icon="star" color={`${starred ? '#F7D154' : 'muted'}`} />
+            </Button>
+          </motion.div>
+
+          <motion.div className="motion-button" whileTap={{ scale: 0.9 }}>
+            <Button
+              appearance="minimal"
+              padding={8}
+              onClick={() => this.setState({ isShownDel: true })}
+            >
+              <Icon icon="cross" color="danger" />
+            </Button>
+          </motion.div>
         </Pane>
 
         {/* Edit Dialog  */}
