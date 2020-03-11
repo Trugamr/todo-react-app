@@ -30,12 +30,6 @@ const TodoPage = ({ currentUser }) => {
     }
   }
 
-  const spring = {
-    type: 'spring',
-    damping: 50,
-    stiffness: 200
-  }
-
   return (
     <div className="todo-page">
       <AnimatePresence exitBeforeEnter>
@@ -45,7 +39,7 @@ const TodoPage = ({ currentUser }) => {
             animate="show"
             exit="hidden"
             key="forAnimation1"
-            transition={{ ...spring, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
             variants={variants}
           >
             <Pane
@@ -67,7 +61,7 @@ const TodoPage = ({ currentUser }) => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            transition={{ ...spring, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
             variants={variants}
             key="forAnimation2"
             onAnimationComplete={() => setTodoFormAnimEnd(true)}
